@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Biblioteca de Andres</h1>
+
+    <button command="show-modal" commandFor="my-modal">Agregar Libro</button>
+
+    <dialog id="my-modal">
+        <form id="book-form">
+            <input type="text" id="title" placeholder="Título">
+            <input type="text" id="author" placeholder="Autor">
+            <input type="number" id="pages" placeholder="Páginas">
+            <input type="checkbox" id="read">
+            <label for="read">Leído</label>
+            <button type="submit">Agregar Libro</button>
+        </form>
+    </dialog>
+
+    <div id="library"></div>
+    <script src="Book.js"></script>
+</body>
+
+</html>
