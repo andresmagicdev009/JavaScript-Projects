@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -13,6 +14,11 @@
     <button command="show-modal" commandFor="my-modal">Agregar Libro</button>
 
     <dialog id="my-modal">
+        <div>
+            <h1>Agregar Libro</h1>
+            <button command="close" commandFor="my-modal">X</button>
+        </div>
+
         <form id="book-form">
             <input type="text" id="title" placeholder="Título">
             <input type="text" id="author" placeholder="Autor">

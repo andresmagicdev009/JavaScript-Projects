@@ -10,12 +10,13 @@ const leidoInput = document.querySelector("#read");
 
 
 const libraryDiv = document.querySelector("#library");
+const modal = document.querySelector("#my-modal");
 
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = false;
+    this.read = read;
     this.id = crypto.randomUUID();
 }
 
@@ -28,24 +29,37 @@ function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
-function renderLibrary() {
+function deleteBookFromLibrary(bookId){
+    //Filter the array to man
+    const index = myLibrary.findIndex(book => book.id  === bookId);
+    if(index !== -1){
+        myLibrary.splice(index, 1); // Remove the book from the library
+    }
 
-    // Se limpia la libreria para no duplicar contenido anterior
+    renderLibrary(); // Re-render the library after deletion
+}
+
+function renderLibrary() {
+    // 1. Limpiamos el contenedor
     libraryDiv.innerHTML = "";
 
-    // Se recorre el array y se crea el HTML para cada Libro
+    // 2. Recorremos los libros
     myLibrary.forEach(book => {
-        const bookDiv = `<div class="book-card">
-                            <h3>${book.title}</h3>
-                            <p>Author: ${book.author}</p>
-                            <p>Pages: ${book.pages}</p>
-                            <p>Status: ${book.read ? "Leido" : "No leido"}</p>
-                          </div>
-        `;
-        // Se agrega al div principal de la libreria
+        // NOTA: El truco está en poner data-id="${book.id}" en el div contenedor
+        const bookDiv = `
+            <div class="book-card" data-id="${book.id}">
+                <h3>${book.title}</h3>
+                <p>Author: ${book.author}</p>
+                <p>Pages: ${book.pages}</p>
+                <input type="checkbox" ${book.read ? "checked" : ""} disabled>
+                <p>Status: ${book.read ? "Leído" : "No leído"}</p>
+                <button class="delete-btn">Eliminar</button>
+            </div>
+    `;
+        
+        // 3. Lo inyectamos en el DOM
         libraryDiv.innerHTML += bookDiv;
     });
-
 }
 
 formulario.addEventListener("submit", (e) => {
@@ -58,10 +72,19 @@ formulario.addEventListener("submit", (e) => {
     autorInput.value = "";
     paginasInput.value = "";
     leidoInput.checked = false;
+    modal.close();
 
 })
 
+// Se escucha todos los clicks dentro del contenedor
 
+libraryDiv.addEventListener("click", (e) => {
+    if(e.target.classList.contains("delete-btn")){
+        const bookCard = e.target.closest(".book-card");
+        const bookId = bookCard.getAttribute("data-id");
+        deleteBookFromLibrary(bookId);
+    }
+})
 
 //if (!new.target) {
 //    throw new Error("Book() must be called with 'new'");
