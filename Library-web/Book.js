@@ -25,6 +25,12 @@ Book.prototype.info = function () {
     return `${this.id}: ${this.title} by ${this.author}, ${this.pages} pages, ${readStatus}`;
 }
 
+Book.prototype.toggleReadStatus = function() {
+    // Cambia el valor actual a su opuesto (si es true pasa a false y viceversa)
+    this.read = !this.read;
+};
+
+
 function addBookToLibrary(book) {
     myLibrary.push(book);
 }
@@ -48,10 +54,11 @@ function renderLibrary() {
         // NOTA: El truco está en poner data-id="${book.id}" en el div contenedor
         const bookDiv = `
             <div class="book-card" data-id="${book.id}">
-                <h3>${book.title}</h3>
+                <h3>${book. title}</h3>
                 <p>Author: ${book.author}</p>
                 <p>Pages: ${book.pages}</p>
-                <input type="checkbox" ${book.read ? "checked" : ""} disabled>
+                <label for="status">Marcar como leído</label>
+                <input class="status-checkbox" id="status" type="checkbox" ${book.read ? "checked" : ""}>
                 <p>Status: ${book.read ? "Leído" : "No leído"}</p>
                 <button class="delete-btn">Eliminar</button>
             </div>
@@ -59,7 +66,7 @@ function renderLibrary() {
         
         // 3. Lo inyectamos en el DOM
         libraryDiv.innerHTML += bookDiv;
-    });
+    }); 
 }
 
 formulario.addEventListener("submit", (e) => {
@@ -84,6 +91,21 @@ libraryDiv.addEventListener("click", (e) => {
         const bookId = bookCard.getAttribute("data-id");
         deleteBookFromLibrary(bookId);
     }
+    if(e.target.classList.contains("status-checkbox")){
+        const bookCard = e.target.closest(".book-card");
+        const bookId = bookCard.getAttribute("data-id");
+
+        // Buscar el libro en el array
+        const libroEncontrado = myLibrary.find(book => book.id === bookId);
+        // Si se encontro el libro entonces se procede a cambiar su estado
+        if(libroEncontrado){
+            // Cambiar el estado de lectura del libro
+            libroEncontrado.toggleReadStatus();
+            renderLibrary(); // Re-render the library to reflect the change
+        }
+    }
+
+
 })
 
 //if (!new.target) {
