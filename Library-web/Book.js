@@ -11,6 +11,8 @@ const leidoInput = document.querySelector("#read");
 
 const libraryDiv = document.querySelector("#library");
 const modal = document.querySelector("#my-modal");
+const filterControls = document.querySelector("#filter-controls");
+let currentFilter = "all"; // Variable para almacenar el filtro actual
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -45,12 +47,32 @@ function deleteBookFromLibrary(bookId){
     renderLibrary(); // Re-render the library after deletion
 }
 
+function updateStats(){
+    const totalBooks = myLibrary.length;
+    const readBooks = myLibrary.filter(book => book.read).length;
+    const unreadBooks = totalBooks - readBooks;
+
+    document.querySelector("#total-books").textContent = `${totalBooks}`;
+    document.querySelector("#read-books").textContent = `${readBooks}`;
+    document.querySelector("#unread-books").textContent = `${unreadBooks}`;
+}
+
+
 function renderLibrary() {
     // 1. Limpiamos el contenedor
     libraryDiv.innerHTML = "";
 
+    // Por defecto son todos los libros
+    let booksToRender = myLibrary;
+
+    if(currentFilter === "read"){
+        booksToRender = myLibrary.filter(book => book.read === true);
+    } else if(currentFilter === "unread"){
+        booksToRender = myLibrary.filter(book => book.read === false);
+    }
+
     // 2. Recorremos los libros
-    myLibrary.forEach(book => {
+    booksToRender.forEach(book => {
         // NOTA: El truco está en poner data-id="${book.id}" en el div contenedor
         const bookDiv = `
             <div class="book-card" data-id="${book.id}">
@@ -74,6 +96,7 @@ formulario.addEventListener("submit", (e) => {
     const newBook = new Book(tituloInput.value, autorInput.value, paginasInput.value, leidoInput.checked);
     addBookToLibrary(newBook);
     renderLibrary();
+    updateStats();
     console.log(`El libro agregado es: ${tituloInput.value}`);
     tituloInput.value = "";
     autorInput.value = "";
@@ -102,12 +125,20 @@ libraryDiv.addEventListener("click", (e) => {
             // Cambiar el estado de lectura del libro
             libroEncontrado.toggleReadStatus();
             renderLibrary(); // Re-render the library to reflect the change
+            updateStats();
         }
     }
 
 
 })
 
+
+filterControls.addEventListener("click" , (e) => {
+    if(e.target.classList.contains("filter-btn")) {
+        currentFilter = e.target.getAttribute("data-filter");
+        renderLibrary();
+    }
+})
 //if (!new.target) {
 //    throw new Error("Book() must be called with 'new'");
 //}

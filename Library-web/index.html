@@ -13,6 +13,21 @@
 
     <button command="show-modal" commandFor="my-modal">Agregar Libro</button>
 
+
+    <div>
+        <h1>Panel de Estadisticas y Filtros</h1>
+        <div id="stats-panel">
+            <p>Libros Totales: <span id="total-books">0</span></p>
+            <p>Libros Leidos: <span id="read-books">0</span></p>
+            <p>Libros no Leidos: <span id="unread-books">0</span></p>
+        </div>
+        <div id="filter-controls">
+            <button class="filter-btn" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="read">Leidos</button>
+            <button class="filter-btn" data-filter="unread">No Leidos</button>
+        </div> 
+    </div>
+
     <dialog id="my-modal">
         <div>
             <h1>Agregar Libro</h1>
