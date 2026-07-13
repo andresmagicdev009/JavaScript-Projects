@@ -4,9 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Juego de tres en raya</h1>
+
+    <main class="game-container">
+        <h1>Tres en Raya</h1>
+
+        <div id="setup-screen">
+            <input type="text" id="p1-name" placeholder="Nombre Jugador 1(X)" value="Andres">
+            <input type="text" id="p2-name" placeholder="Nombre Jugador 2(O)" value="Aaron">
+            <button id="start-game">Comenzar Juego</button>
+        </div>
+
+        <div id="status-message" class="hidden">Introduce los nombres para empezar</div>
+        <div id="html-board" class="hidden"></div>
+        <button id="reset-game" class="hidden">Reiniciar Juego</button>
+    </main>
+
+    <div id="html-board">
+        
+    </div>
+    <script src="index.js"></script>
+    
 </body>
 </html>
